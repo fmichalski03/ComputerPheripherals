@@ -1,0 +1,80 @@
+# =========================
+# Visual Studio / .NET
+# =========================
+
+## Build results
+[Bb]in/
+[Oo]bj/
+[Ll]og/
+
+## User-specific files
+*.user
+*.rsuser
+*.suo
+*.userosscache
+*.sln.docstates
+
+## Visual Studio cache
+.vs/
+
+## Build logs
+*.log
+
+## Test results
+[Tt]est[Rr]esult*/
+*.trx
+
+## Coverage
+*.coverage
+*.coveragexml
+
+## Publish
+**/publish/
+
+## NuGet
+*.nupkg
+*.snupkg
+.nuget/
+packages/
+
+## Rider / JetBrains
+.idea/
+*.sln.iml
+
+## Resharper
+_ReSharper*/
+*.[Rr]e[Ss]harper
+*.DotSettings.user
+
+## Visual Studio Code
+.vscode/
+
+## OS files
+.DS_Store
+Thumbs.db
+ehthumbs.db
+desktop.ini
+
+## Backup files
+*.bak
+*.tmp
+*.temp
+*.old
+
+## SQL Server
+*.mdf
+*.ldf
+
+## App packages
+*.appx
+*.appxbundle
+*.msix
+*.msixbundle
+
+## WPF specific
+*.g.cs
+*.g.i.cs
+
+## Others
+*.cache
+*.pdb
