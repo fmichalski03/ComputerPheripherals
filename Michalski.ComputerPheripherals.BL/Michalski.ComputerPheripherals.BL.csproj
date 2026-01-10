@@ -1,0 +1,14 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Michalski.ComputerPheripherals.CORE\Michalski.ComputerPheripherals.CORE.csproj" />
+    <ProjectReference Include="..\Michalski.ComputerPheripherals.INTERFACES\Michalski.ComputerPheripherals.INTERFACES.csproj" />
+  </ItemGroup>
+
+</Project>

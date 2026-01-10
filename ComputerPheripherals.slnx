@@ -1,0 +1,7 @@
+<Solution>
+  <Project Path="Michalski.ComputerPheripherals.BL/Michalski.ComputerPheripherals.BL.csproj" />
+  <Project Path="Michalski.ComputerPheripherals.CORE/Michalski.ComputerPheripherals.CORE.csproj" />
+  <Project Path="Michalski.ComputerPheripherals.DAO/Michalski.ComputerPheripherals.DAO.csproj" />
+  <Project Path="Michalski.ComputerPheripherals.INTERFACES/Michalski.ComputerPheripherals.INTERFACES.csproj" />
+  <Project Path="Michalski.ComputerPheripherals.UI/Michalski.ComputerPheripherals.UI.csproj" />
+</Solution>
