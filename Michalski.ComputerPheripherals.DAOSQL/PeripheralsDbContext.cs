@@ -1,4 +1,6 @@
 using Microsoft.EntityFrameworkCore;
+using System;
+using System.IO;
 
 namespace Michalski.ComputerPheripherals.DAOSQL
 {
@@ -9,8 +11,11 @@ namespace Michalski.ComputerPheripherals.DAOSQL
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            // Definiujemy, że będziemy korzystać z bazy danych SQLite i podajemy nazwę pliku bazy
-            optionsBuilder.UseSqlite("Data Source=computer_peripherals.db");
+            // Tworzymy absolutną ścieżkę do pliku bazy danych w tym samym folderze,
+            // w którym znajduje się plik DLL biblioteki. Gwarantuje to, że aplikacja
+            // i narzędzia EF używają tego samego pliku.
+            var dbPath = Path.Combine(AppContext.BaseDirectory, "computer_peripherals.db");
+            optionsBuilder.UseSqlite($"Data Source={dbPath}");
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)

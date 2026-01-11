@@ -7,6 +7,14 @@ namespace Michalski.ComputerPheripherals.DAOSQL
 {
     public class DaoSql : IDao
     {
+        public DaoSql()
+        {
+            using (var context = new PeripheralsDbContext())
+            {
+                context.Database.Migrate();
+            }
+        }
+
         public void AddManufacturer(IManufacturer manufacturer)
         {
             using (var context = new PeripheralsDbContext())
