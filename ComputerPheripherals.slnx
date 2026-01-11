@@ -2,6 +2,8 @@
   <Project Path="Michalski.ComputerPheripherals.BL/Michalski.ComputerPheripherals.BL.csproj" />
   <Project Path="Michalski.ComputerPheripherals.CORE/Michalski.ComputerPheripherals.CORE.csproj" />
   <Project Path="Michalski.ComputerPheripherals.DAO/Michalski.ComputerPheripherals.DAO.csproj" />
+  <Project Path="Michalski.ComputerPheripherals.DAOFile/Michalski.ComputerPheripherals.DAOFile.csproj" Id="aca9e457-39db-4660-a119-5f68f7bca46f" />
+  <Project Path="Michalski.ComputerPheripherals.DAOSQL/Michalski.ComputerPheripherals.DAOSQL.csproj" Id="04ff8b02-e651-4faa-95e5-4deb861ca98b" />
   <Project Path="Michalski.ComputerPheripherals.INTERFACES/Michalski.ComputerPheripherals.INTERFACES.csproj" />
   <Project Path="Michalski.ComputerPheripherals.UI/Michalski.ComputerPheripherals.UI.csproj" />
 </Solution>

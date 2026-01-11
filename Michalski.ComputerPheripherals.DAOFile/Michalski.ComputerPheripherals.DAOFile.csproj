@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>net10.0</TargetFramework>
@@ -7,7 +7,12 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.4" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\Michalski.ComputerPheripherals.CORE\Michalski.ComputerPheripherals.CORE.csproj" />
+    <ProjectReference Include="..\Michalski.ComputerPheripherals.INTERFACES\Michalski.ComputerPheripherals.INTERFACES.csproj" />
   </ItemGroup>
 
 </Project>
