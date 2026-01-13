@@ -19,7 +19,7 @@ namespace Michalski.ComputerPheripherals.DAOSQL
         IManufacturer IProduct.Manufacturer 
         { 
             get => Manufacturer; 
-            set => Manufacturer = value as Manufacturer; 
+            set => Manufacturer = (Manufacturer)value; 
         }
     }
 }

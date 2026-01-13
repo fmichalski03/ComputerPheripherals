@@ -51,10 +51,36 @@ namespace Michalski.ComputerPheripherals.WebApp.Controllers
         // POST: Products/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create_Post()
+        public IActionResult Create_Post(IFormCollection form)
         {
             var newProduct = _blc.CreateProduct();
-            if (await TryUpdateModelAsync(newProduct, "", p => p.Name, p => p.Price, p => p.Type, p => p.ManufacturerId))
+
+            // Ręczne przypisanie wartości z formularza
+            newProduct.Name = form["Name"];
+            if (decimal.TryParse(form["Price"], System.Globalization.NumberStyles.Any, System.Globalization.CultureInfo.InvariantCulture, out var price))
+            {
+                newProduct.Price = price;
+            }
+            if (Enum.TryParse<Michalski.ComputerPheripherals.CORE.PeripheralType>(form["Type"], out var type))
+            {
+                newProduct.Type = type;
+            }
+            if (int.TryParse(form["ManufacturerId"], out var manufacturerId))
+            {
+                newProduct.ManufacturerId = manufacturerId;
+            }
+
+            // Ręczna walidacja
+            if (string.IsNullOrWhiteSpace(newProduct.Name))
+            {
+                ModelState.AddModelError("Name", "Nazwa produktu jest wymagana.");
+            }
+            if (newProduct.ManufacturerId == 0)
+            {
+                ModelState.AddModelError("ManufacturerId", "Należy wybrać producenta.");
+            }
+
+            if (ModelState.IsValid)
             {
                 var manufacturer = _blc.GetManufacturers().FirstOrDefault(m => m.Id == newProduct.ManufacturerId);
                 if (manufacturer != null)
@@ -63,11 +89,14 @@ namespace Michalski.ComputerPheripherals.WebApp.Controllers
                     _blc.AddProduct(newProduct);
                     return RedirectToAction(nameof(Index));
                 }
-                ModelState.AddModelError("ManufacturerId", "Selected manufacturer is invalid.");
+                else
+                {
+                    ModelState.AddModelError("ManufacturerId", $"Wybrany producent (ID: {newProduct.ManufacturerId}) jest nieprawidłowy.");
+                }
             }
-            
+
             ViewBag.Manufacturers = new SelectList(_blc.GetManufacturers(), "Id", "Name", newProduct.ManufacturerId);
-            return View(newProduct);
+            return View("Create", newProduct);
         }
 
         // GET: Products/Edit/5

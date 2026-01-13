@@ -34,7 +34,7 @@ namespace Michalski.ComputerPheripherals.DAOSQL
                     Name = product.Name,
                     Price = product.Price,
                     Type = product.Type,
-                    ManufacturerId = product.Manufacturer.Id
+                    ManufacturerId = product.ManufacturerId
                 };
                 context.Products.Add(newProduct);
                 context.SaveChanges();
