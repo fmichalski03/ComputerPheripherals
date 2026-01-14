@@ -63,9 +63,14 @@ namespace Michalski.ComputerPheripherals.WebApp.Controllers
 
             // Ręczne przypisanie wartości z formularza
             newProduct.Name = form["Name"];
-            if (decimal.TryParse(form["Price"], System.Globalization.NumberStyles.Any, System.Globalization.CultureInfo.InvariantCulture, out var price))
+            string priceString = form["Price"];
+            if (TryParsePrice(priceString, out var price))
             {
                 newProduct.Price = price;
+            }
+            else if (!string.IsNullOrEmpty(priceString))
+            {
+                ModelState.AddModelError("Price", "Pole Cena musi być liczbą.");
             }
             if (Enum.TryParse<Michalski.ComputerPheripherals.CORE.PeripheralType>(form["Type"], out var type))
             {
@@ -125,17 +130,38 @@ namespace Michalski.ComputerPheripherals.WebApp.Controllers
         // POST: Products/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id)
+        public IActionResult Edit(int id, IFormCollection form)
         {
             var productToUpdate = _blc.GetProducts().FirstOrDefault(p => p.Id == id);
-            if(productToUpdate == null)
+            if (productToUpdate == null)
             {
                 return NotFound();
             }
 
-            if (await TryUpdateModelAsync(productToUpdate, "", p => p.Name, p => p.Price, p => p.Type, p => p.ManufacturerId))
+            // Ręczne wiązanie modelu w celu poprawnej obsługi formatów liczb
+            productToUpdate.Name = form["Name"];
+            
+            string priceString = form["Price"];
+            if (TryParsePrice(priceString, out var price))
             {
-                 var manufacturer = _blc.GetManufacturers().FirstOrDefault(m => m.Id == productToUpdate.ManufacturerId);
+                productToUpdate.Price = price;
+            }
+            else if (!string.IsNullOrEmpty(priceString)) // Tylko dodaj błąd, jeśli pole nie jest puste
+            {
+                ModelState.AddModelError("Price", "Pole Cena musi być liczbą.");
+            }
+            if (Enum.TryParse<Michalski.ComputerPheripherals.CORE.PeripheralType>(form["Type"], out var type))
+            {
+                productToUpdate.Type = type;
+            }
+            if (int.TryParse(form["ManufacturerId"], out var manufacturerId))
+            {
+                productToUpdate.ManufacturerId = manufacturerId;
+            }
+
+            if (ModelState.IsValid)
+            {
+                var manufacturer = _blc.GetManufacturers().FirstOrDefault(m => m.Id == productToUpdate.ManufacturerId);
                 if (manufacturer != null)
                 {
                     productToUpdate.Manufacturer = manufacturer;
@@ -173,6 +199,14 @@ namespace Michalski.ComputerPheripherals.WebApp.Controllers
         {
             _blc.DeleteProduct(id);
             return RedirectToAction(nameof(Index));
+        }
+
+        private static bool TryParsePrice(string priceString, out decimal price)
+        {
+            var numberStyles = System.Globalization.NumberStyles.AllowDecimalPoint | System.Globalization.NumberStyles.AllowLeadingSign;
+            var polishCulture = new System.Globalization.CultureInfo("pl-PL");
+            return decimal.TryParse(priceString, numberStyles, polishCulture, out price)
+                || decimal.TryParse(priceString, numberStyles, System.Globalization.CultureInfo.InvariantCulture, out price);
         }
     }
 }

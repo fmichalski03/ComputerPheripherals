@@ -1,4 +1,6 @@
 using Michalski.ComputerPheripherals.BL;
+using System.Globalization;
+using Microsoft.AspNetCore.Localization;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -8,6 +10,15 @@ builder.Services.AddSingleton<BLC>(new BLC(daoLibrary));
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+
+// Configure localization
+builder.Services.Configure<RequestLocalizationOptions>(options =>
+{
+    var supportedCultures = new[] { new CultureInfo("pl-PL") };
+    options.DefaultRequestCulture = new RequestCulture("pl-PL");
+    options.SupportedCultures = supportedCultures;
+    options.SupportedUICultures = supportedCultures;
+});
 
 var app = builder.Build();
 
@@ -20,7 +31,12 @@ if (!app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+app.UseStaticFiles();
+
 app.UseRouting();
+
+// Apply localization middleware
+app.UseRequestLocalization();
 
 app.UseAuthorization();
 
