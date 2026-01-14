@@ -9,6 +9,7 @@
   <ItemGroup>
     <ProjectReference Include="..\Michalski.ComputerPheripherals.CORE\Michalski.ComputerPheripherals.CORE.csproj" />
     <ProjectReference Include="..\Michalski.ComputerPheripherals.INTERFACES\Michalski.ComputerPheripherals.INTERFACES.csproj" />
+	<PackageReference Include="System.Configuration.ConfigurationManager" Version="8.0.0" />
   </ItemGroup>
 
 </Project>

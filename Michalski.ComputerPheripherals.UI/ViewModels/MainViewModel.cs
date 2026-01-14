@@ -25,14 +25,7 @@ namespace Michalski.ComputerPheripherals.UI
 
         public MainViewModel()
         {
-            // Wczytanie nazwy biblioteki z pliku konfiguracyjnego - wymaganie 2.5
-            string daoLibrary = ConfigurationManager.AppSettings["DaoLibrary"];
-            if (string.IsNullOrEmpty(daoLibrary))
-            {
-                daoLibrary = "Michalski.ComputerPheripherals.DAO.dll";
-            }
-
-            _blc = new BLC(daoLibrary);
+            _blc = new BLC();
             LoadData();
 
             AddCommand = new RelayCommand(AddProduct);
@@ -138,7 +131,7 @@ namespace Michalski.ComputerPheripherals.UI
             _blc.AddProduct(newProduct);
             Products.Add(newProduct);
             SelectedProduct = newProduct;
-            StatusMessage = "Dodano nowy produkt. Wype³nij dane.";
+            StatusMessage = "Dodano nowy produkt. Wypeï¿½nij dane.";
         }
 
         private void UpdateProduct(object obj)
@@ -147,7 +140,7 @@ namespace Michalski.ComputerPheripherals.UI
 
             if (string.IsNullOrWhiteSpace(SelectedProduct.Name) || SelectedProduct.Name.Length < 2)
             {
-                StatusMessage = "B³¹d: Nazwa jest zbyt krótka!";
+                StatusMessage = "Bï¿½ï¿½d: Nazwa jest zbyt krï¿½tka!";
                 return;
             }
 
@@ -162,7 +155,7 @@ namespace Michalski.ComputerPheripherals.UI
             _blc.DeleteProduct(SelectedProduct.Id);
             Products.Remove(SelectedProduct);
             SelectedProduct = null;
-            StatusMessage = "Usuniêto produkt.";
+            StatusMessage = "Usuniï¿½to produkt.";
         }
 
         private void AddManufacturer(object obj)
