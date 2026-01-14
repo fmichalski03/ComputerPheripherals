@@ -17,9 +17,15 @@ namespace Michalski.ComputerPheripherals.WebApp.Controllers
         }
 
         // GET: Products
-        public IActionResult Index()
+        public IActionResult Index(string searchString)
         {
             var products = _blc.GetProducts();
+
+            if (!String.IsNullOrEmpty(searchString))
+            {
+                products = products.Where(s => s.Name.Contains(searchString, StringComparison.OrdinalIgnoreCase));
+            }
+
             return View(products);
         }
 
