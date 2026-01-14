@@ -1,13 +1,13 @@
 @model Michalski.ComputerPheripherals.INTERFACES.IProduct
 
 @{
-    ViewData["Title"] = "Details";
+    ViewData["Title"] = "Szczegóły";
 }
 
-<h1>Details</h1>
+<h1>Szczegóły</h1>
 
 <div>
-    <h4>Product</h4>
+    <h4>Produkt</h4>
     <hr />
     <dl class="row">
         <dt class = "col-sm-2">
@@ -29,7 +29,7 @@
             @Html.DisplayFor(model => model.Type)
         </dd>
         <dt class = "col-sm-2">
-            Manufacturer
+            Producent
         </dt>
         <dd class = "col-sm-10">
             @Html.DisplayFor(model => model.Manufacturer.Name)
@@ -37,6 +37,6 @@
     </dl>
 </div>
 <div>
-    <a asp-action="Edit" asp-route-id="@Model.Id">Edit</a> |
-    <a asp-action="Index">Back to List</a>
+    <a asp-action="Edit" asp-route-id="@Model.Id">Edytuj</a> |
+    <a asp-action="Index">Powrót do listy</a>
 </div>

@@ -142,7 +142,7 @@ namespace Michalski.ComputerPheripherals.WebApp.Controllers
                     _blc.UpdateProduct(productToUpdate);
                     return RedirectToAction(nameof(Index));
                 }
-                ModelState.AddModelError("ManufacturerId", "Selected manufacturer is invalid.");
+                ModelState.AddModelError("ManufacturerId", "Wybrany producent jest nieprawidłowy.");
             }
 
             ViewBag.Manufacturers = new SelectList(_blc.GetManufacturers(), "Id", "Name", productToUpdate.ManufacturerId);
