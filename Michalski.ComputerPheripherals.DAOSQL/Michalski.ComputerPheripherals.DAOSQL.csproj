@@ -19,4 +19,10 @@
     <ProjectReference Include="..\Michalski.ComputerPheripherals.INTERFACES\Michalski.ComputerPheripherals.INTERFACES.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Content Include="computer_peripherals.db" Condition="Exists('computer_peripherals.db')">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
 </Project>
