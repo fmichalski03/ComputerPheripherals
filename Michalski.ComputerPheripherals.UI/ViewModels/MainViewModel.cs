@@ -1,7 +1,6 @@
-using System;
+﻿using System;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
-using System.Configuration;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Windows.Data;
@@ -18,6 +17,8 @@ namespace Michalski.ComputerPheripherals.UI
         private ObservableCollection<IProduct> _products;
         private ObservableCollection<IManufacturer> _manufacturers;
         private IProduct _selectedProduct;
+        private IManufacturer _selectedManufacturer;
+        private string _newManufacturerName;
         private string _statusMessage;
         private string _filterText;
 
@@ -32,6 +33,7 @@ namespace Michalski.ComputerPheripherals.UI
             UpdateCommand = new RelayCommand(UpdateProduct, CanModify);
             DeleteCommand = new RelayCommand(DeleteProduct, CanModify);
             AddManufacturerCommand = new RelayCommand(AddManufacturer);
+            DeleteManufacturerCommand = new RelayCommand(DeleteManufacturer, CanDeleteManufacturer);
         }
 
         private void LoadData()
@@ -72,6 +74,26 @@ namespace Michalski.ComputerPheripherals.UI
             }
         }
 
+        public IManufacturer SelectedManufacturer
+        {
+            get => _selectedManufacturer;
+            set
+            {
+                _selectedManufacturer = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public string NewManufacturerName
+        {
+            get => _newManufacturerName;
+            set
+            {
+                _newManufacturerName = value;
+                OnPropertyChanged();
+            }
+        }
+
         public string StatusMessage
         {
             get => _statusMessage;
@@ -101,8 +123,11 @@ namespace Michalski.ComputerPheripherals.UI
         public ICommand UpdateCommand { get; }
         public ICommand DeleteCommand { get; }
         public ICommand AddManufacturerCommand { get; }
+        public ICommand DeleteManufacturerCommand { get; }
 
         private bool CanModify(object obj) => SelectedProduct != null;
+
+        private bool CanDeleteManufacturer(object obj) => SelectedManufacturer != null;
 
         private bool FilterProducts(object obj)
         {
@@ -131,7 +156,7 @@ namespace Michalski.ComputerPheripherals.UI
             _blc.AddProduct(newProduct);
             Products.Add(newProduct);
             SelectedProduct = newProduct;
-            StatusMessage = "Dodano nowy produkt. Wype�nij dane.";
+            StatusMessage = "Dodano nowy produkt. Wype\u0142nij dane.";
         }
 
         private void UpdateProduct(object obj)
@@ -140,7 +165,7 @@ namespace Michalski.ComputerPheripherals.UI
 
             if (string.IsNullOrWhiteSpace(SelectedProduct.Name) || SelectedProduct.Name.Length < 2)
             {
-                StatusMessage = "B��d: Nazwa jest zbyt kr�tka!";
+                StatusMessage = "B\u0142\u0105d: Nazwa jest zbyt kr\u00F3tka!";
                 return;
             }
 
@@ -155,16 +180,50 @@ namespace Michalski.ComputerPheripherals.UI
             _blc.DeleteProduct(SelectedProduct.Id);
             Products.Remove(SelectedProduct);
             SelectedProduct = null;
-            StatusMessage = "Usuni�to produkt.";
+            StatusMessage = "Usuni\u0119to produkt.";
         }
 
         private void AddManufacturer(object obj)
         {
+            var name = (NewManufacturerName ?? string.Empty).Trim();
+            if (string.IsNullOrWhiteSpace(name))
+            {
+                StatusMessage = "Podaj nazw\u0119 producenta.";
+                return;
+            }
+
             var man = _blc.CreateManufacturer();
-            man.Name = "Nowy Producent " + (Manufacturers.Count + 1);
+            man.Name = name;
             _blc.AddManufacturer(man);
             Manufacturers.Add(man);
+            SelectedManufacturer = man;
+            NewManufacturerName = string.Empty;
             StatusMessage = "Dodano nowego producenta.";
+        }
+
+        private void DeleteManufacturer(object obj)
+        {
+            if (SelectedManufacturer == null) return;
+
+            var manufacturerId = SelectedManufacturer.Id;
+            var productsToRemove = Products.Where(p => p.ManufacturerId == manufacturerId).ToList();
+            foreach (var product in productsToRemove)
+            {
+                Products.Remove(product);
+            }
+
+            if (SelectedProduct != null && SelectedProduct.ManufacturerId == manufacturerId)
+            {
+                SelectedProduct = null;
+            }
+
+            _blc.DeleteManufacturer(manufacturerId);
+            Manufacturers.Remove(SelectedManufacturer);
+            SelectedManufacturer = null;
+
+            StatusMessage = productsToRemove.Count == 0
+                ? "Usuni\u0119to producenta."
+                : $"Usuni\u0119to producenta i {productsToRemove.Count} powi\u0105zane produkty.";
         }
 
         protected void OnPropertyChanged([CallerMemberName] string propertyName = null)

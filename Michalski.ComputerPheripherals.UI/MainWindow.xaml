@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Michalski.ComputerPheripherals.UI"
         mc:Ignorable="d"
-        Title="Katalog Peryferii Komputerowych" Height="450" Width="800">
+        Title="Katalog Peryferii Komputerowych" Height="450" Width="900">
 
     <Window.DataContext>
         <local:MainViewModel/>
@@ -17,58 +17,79 @@
             <ColumnDefinition Width="1*"/>
         </Grid.ColumnDefinitions>
 
-        <!-- Lista Produktów -->
-        <DockPanel Grid.Column="0" Margin="0,0,10,0">
-            <StackPanel DockPanel.Dock="Top" Orientation="Horizontal" Margin="0,0,0,5">
-                <Button Content="Dodaj Produkt" Command="{Binding AddCommand}" Padding="5,2" Margin="0,0,5,0"/>
-                <Button Content="Usuń Zaznaczony" Command="{Binding DeleteCommand}" Padding="5,2"/>
-                <Button Content="Dodaj Producenta (Test)" Command="{Binding AddManufacturerCommand}" Padding="5,2" Margin="10,0,0,0"/>
+        <Grid Grid.Column="0" Margin="0,0,10,0">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+
+            <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="0,0,0,5">
+                <Button Content="Dodaj produkt" Command="{Binding AddCommand}" Padding="5,2" Margin="0,0,5,0"/>
+                <Button Content="Usu&#324; zaznaczony" Command="{Binding DeleteCommand}" Padding="5,2"/>
             </StackPanel>
 
-            <StackPanel DockPanel.Dock="Top" Orientation="Horizontal" Margin="0,0,0,5">
+            <StackPanel Grid.Row="1" Orientation="Horizontal" Margin="0,0,0,5">
                 <TextBlock Text="Szukaj:" VerticalAlignment="Center" Margin="0,0,5,0"/>
                 <TextBox Text="{Binding FilterText, UpdateSourceTrigger=PropertyChanged}" Width="200"/>
             </StackPanel>
 
-            <DataGrid ItemsSource="{Binding ProductsView}" SelectedItem="{Binding SelectedProduct}" AutoGenerateColumns="False" IsReadOnly="True">
+            <DataGrid Grid.Row="2" ItemsSource="{Binding ProductsView}" SelectedItem="{Binding SelectedProduct}" AutoGenerateColumns="False" IsReadOnly="True">
                 <DataGrid.Columns>
                     <DataGridTextColumn Header="Nazwa" Binding="{Binding Name}" Width="*"/>
                     <DataGridTextColumn Header="Cena" Binding="{Binding Price, StringFormat=C}" Width="80"/>
                     <DataGridTextColumn Header="Typ" Binding="{Binding Type}" Width="80"/>
-                    <DataGridTextColumn Header="Producent" Binding="{Binding Manufacturer.Name}" Width="100"/>
+                    <DataGridTextColumn Header="Producent" Binding="{Binding Manufacturer.Name}" Width="120"/>
                 </DataGrid.Columns>
             </DataGrid>
-        </DockPanel>
+        </Grid>
 
-        <!-- Formularz Edycji -->
-        <StackPanel Grid.Column="1" DataContext="{Binding SelectedProduct}">
-            <TextBlock Text="Szczegóły Produktu" FontWeight="Bold" Margin="0,0,0,10"/>
+        <Grid Grid.Column="1">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
 
-            <TextBlock Text="Nazwa:"/>
-            <TextBox Text="{Binding Name, UpdateSourceTrigger=PropertyChanged}" Margin="0,0,0,5"/>
+            <StackPanel Grid.Row="0" DataContext="{Binding SelectedProduct}">
+                <TextBlock Text="Szczeg&#243;&#322;y produktu" FontWeight="Bold" Margin="0,0,0,10"/>
 
-            <TextBlock Text="Cena:"/>
-            <TextBox Text="{Binding Price, UpdateSourceTrigger=PropertyChanged}" Margin="0,0,0,5"/>
+                <TextBlock Text="Nazwa:"/>
+                <TextBox Text="{Binding Name, UpdateSourceTrigger=PropertyChanged}" Margin="0,0,0,5"/>
 
-            <TextBlock Text="Typ:"/>
-            <ComboBox ItemsSource="{Binding DataContext.PeripheralTypes, RelativeSource={RelativeSource AncestorType=Window}}"
-                      SelectedItem="{Binding Type}" Margin="0,0,0,5"/>
+                <TextBlock Text="Cena:"/>
+                <TextBox Text="{Binding Price, UpdateSourceTrigger=PropertyChanged}" Margin="0,0,0,5"/>
 
-            <TextBlock Text="Producent:"/>
-            <ComboBox ItemsSource="{Binding DataContext.Manufacturers, RelativeSource={RelativeSource AncestorType=Window}}"
-                      SelectedValue="{Binding ManufacturerId}"
-                      SelectedValuePath="Id"
-                      DisplayMemberPath="Name"
-                      SelectedItem="{Binding Manufacturer}"
-                      Margin="0,0,0,10"/>
+                <TextBlock Text="Typ:"/>
+                <ComboBox ItemsSource="{Binding DataContext.PeripheralTypes, RelativeSource={RelativeSource AncestorType=Window}}"
+                          SelectedItem="{Binding Type}" Margin="0,0,0,5"/>
 
-            <Button Content="Zapisz Zmiany" 
-                    Command="{Binding DataContext.UpdateCommand, RelativeSource={RelativeSource AncestorType=Window}}" 
-                    Height="30"/>
-        </StackPanel>
+                <TextBlock Text="Producent:"/>
+                <ComboBox ItemsSource="{Binding DataContext.Manufacturers, RelativeSource={RelativeSource AncestorType=Window}}"
+                          SelectedValue="{Binding ManufacturerId}"
+                          SelectedValuePath="Id"
+                          DisplayMemberPath="Name"
+                          SelectedItem="{Binding Manufacturer}"
+                          Margin="0,0,0,10"/>
 
-        <!-- Status Bar -->
-        <TextBlock Grid.ColumnSpan="2" VerticalAlignment="Bottom" HorizontalAlignment="Left" 
+                <Button Content="Zapisz zmiany"
+                        Command="{Binding DataContext.UpdateCommand, RelativeSource={RelativeSource AncestorType=Window}}"
+                        Height="30"/>
+            </StackPanel>
+
+            <GroupBox Grid.Row="1" Header="Producenci" Margin="0,10,0,0">
+                <StackPanel>
+                    <TextBlock Text="Nazwa producenta:"/>
+                    <TextBox Text="{Binding NewManufacturerName, UpdateSourceTrigger=PropertyChanged}" Margin="0,0,0,5"/>
+                    <StackPanel Orientation="Horizontal" Margin="0,0,0,5">
+                        <Button Content="Dodaj producenta" Command="{Binding AddManufacturerCommand}" Padding="5,2" Margin="0,0,5,0"/>
+                        <Button Content="Usu&#324; producenta" Command="{Binding DeleteManufacturerCommand}" Padding="5,2"/>
+                    </StackPanel>
+                    <ListBox ItemsSource="{Binding Manufacturers}" SelectedItem="{Binding SelectedManufacturer}" DisplayMemberPath="Name" Height="120"/>
+                </StackPanel>
+            </GroupBox>
+        </Grid>
+
+        <TextBlock Grid.ColumnSpan="2" VerticalAlignment="Bottom" HorizontalAlignment="Left"
                    Text="{Binding StatusMessage}" Foreground="Blue" Margin="0,5,0,0"/>
     </Grid>
 </Window>

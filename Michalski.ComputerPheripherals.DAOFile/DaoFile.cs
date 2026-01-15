@@ -44,8 +44,17 @@ namespace Michalski.ComputerPheripherals.DAOFile
         {
             LoadDatabase();
             var newId = _database.Manufacturers.Any() ? _database.Manufacturers.Max(m => m.Id) + 1 : 1;
-            var newManufacturer = new Manufacturer { Id = newId, Name = manufacturer.Name };
-            _database.Manufacturers.Add(newManufacturer);
+            manufacturer.Id = newId;
+            if (manufacturer is Manufacturer daoManufacturer)
+            {
+                daoManufacturer.Id = newId;
+                _database.Manufacturers.Add(daoManufacturer);
+            }
+            else
+            {
+                var newManufacturer = new Manufacturer { Id = newId, Name = manufacturer.Name };
+                _database.Manufacturers.Add(newManufacturer);
+            }
             SaveDatabase();
         }
 

@@ -22,6 +22,7 @@ namespace Michalski.ComputerPheripherals.DAOSQL
                 var newManufacturer = new Manufacturer { Name = manufacturer.Name };
                 context.Manufacturers.Add(newManufacturer);
                 context.SaveChanges();
+                manufacturer.Id = newManufacturer.Id;
             }
         }
 
@@ -55,10 +56,22 @@ namespace Michalski.ComputerPheripherals.DAOSQL
         {
             using (var context = new PeripheralsDbContext())
             {
+                var productsToDelete = context.Products
+                    .Where(p => p.ManufacturerId == manufacturerId)
+                    .ToList();
+                if (productsToDelete.Count > 0)
+                {
+                    context.Products.RemoveRange(productsToDelete);
+                }
+
                 var manufacturerToDelete = context.Manufacturers.Find(manufacturerId);
                 if (manufacturerToDelete != null)
                 {
                     context.Manufacturers.Remove(manufacturerToDelete);
+                }
+
+                if (productsToDelete.Count > 0 || manufacturerToDelete != null)
+                {
                     context.SaveChanges();
                 }
             }
