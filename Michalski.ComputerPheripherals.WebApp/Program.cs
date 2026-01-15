@@ -5,8 +5,7 @@ using Microsoft.AspNetCore.Localization;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add BLC as a service
-string daoLibrary = builder.Configuration["DaoLibrary"] ?? "Michalski.ComputerPheripherals.DAO.dll";
-builder.Services.AddSingleton<BLC>(new BLC(daoLibrary));
+builder.Services.AddSingleton<BLC>(new BLC());
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();

@@ -62,8 +62,8 @@ namespace Michalski.ComputerPheripherals.WebApp.Controllers
             var newProduct = _blc.CreateProduct();
 
             // Ręczne przypisanie wartości z formularza
-            newProduct.Name = form["Name"];
-            string priceString = form["Price"];
+            newProduct.Name = form["Name"].ToString();
+            string priceString = form["Price"].ToString();
             if (TryParsePrice(priceString, out var price))
             {
                 newProduct.Price = price;
@@ -139,9 +139,9 @@ namespace Michalski.ComputerPheripherals.WebApp.Controllers
             }
 
             // Ręczne wiązanie modelu w celu poprawnej obsługi formatów liczb
-            productToUpdate.Name = form["Name"];
+            productToUpdate.Name = form["Name"].ToString();
             
-            string priceString = form["Price"];
+            string priceString = form["Price"].ToString();
             if (TryParsePrice(priceString, out var price))
             {
                 productToUpdate.Price = price;
