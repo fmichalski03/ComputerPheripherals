@@ -4,9 +4,6 @@
     <ProjectReference Include="..\Michalski.ComputerPheripherals.BL\Michalski.ComputerPheripherals.BL.csproj" />
     <ProjectReference Include="..\Michalski.ComputerPheripherals.INTERFACES\Michalski.ComputerPheripherals.INTERFACES.csproj" />
     <ProjectReference Include="..\Michalski.ComputerPheripherals.CORE\Michalski.ComputerPheripherals.CORE.csproj" />
-    <ProjectReference Include="..\Michalski.ComputerPheripherals.DAOSQL\Michalski.ComputerPheripherals.DAOSQL.csproj" />
-    <ProjectReference Include="..\Michalski.ComputerPheripherals.DAOFile\Michalski.ComputerPheripherals.DAOFile.csproj" />
-    <ProjectReference Include="..\Michalski.ComputerPheripherals.DAO\Michalski.ComputerPheripherals.DAO.csproj" />
   </ItemGroup>
 
   <PropertyGroup>
