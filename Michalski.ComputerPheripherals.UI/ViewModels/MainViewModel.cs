@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Globalization;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Windows.Data;
@@ -18,7 +19,11 @@ namespace Michalski.ComputerPheripherals.UI
         private ObservableCollection<IManufacturer> _manufacturers;
         private IProduct _selectedProduct;
         private IManufacturer _selectedManufacturer;
+        private IManufacturer _selectedNewManufacturer;
         private string _newManufacturerName;
+        private string _newProductName;
+        private string _newProductPrice;
+        private PeripheralType _newProductType;
         private string _statusMessage;
         private string _filterText;
 
@@ -42,6 +47,8 @@ namespace Michalski.ComputerPheripherals.UI
             ProductsView = CollectionViewSource.GetDefaultView(Products);
             ProductsView.Filter = FilterProducts;
             Manufacturers = new ObservableCollection<IManufacturer>(_blc.GetManufacturers());
+            SelectedNewManufacturer = Manufacturers.FirstOrDefault();
+            NewProductType = PeripheralType.Mouse;
         }
 
         public ObservableCollection<IProduct> Products
@@ -84,12 +91,52 @@ namespace Michalski.ComputerPheripherals.UI
             }
         }
 
+        public IManufacturer SelectedNewManufacturer
+        {
+            get => _selectedNewManufacturer;
+            set
+            {
+                _selectedNewManufacturer = value;
+                OnPropertyChanged();
+            }
+        }
+
         public string NewManufacturerName
         {
             get => _newManufacturerName;
             set
             {
                 _newManufacturerName = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public string NewProductName
+        {
+            get => _newProductName;
+            set
+            {
+                _newProductName = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public string NewProductPrice
+        {
+            get => _newProductPrice;
+            set
+            {
+                _newProductPrice = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public PeripheralType NewProductType
+        {
+            get => _newProductType;
+            set
+            {
+                _newProductType = value;
                 OnPropertyChanged();
             }
         }
@@ -141,22 +188,38 @@ namespace Michalski.ComputerPheripherals.UI
 
         private void AddProduct(object obj)
         {
-            var newProduct = _blc.CreateProduct();
-            newProduct.Name = "Nowy produkt";
-            newProduct.Price = 0;
-            newProduct.Type = PeripheralType.Mouse;
-
-            var defaultMan = Manufacturers.FirstOrDefault();
-            if (defaultMan != null)
+            var name = (NewProductName ?? string.Empty).Trim();
+            if (string.IsNullOrWhiteSpace(name))
             {
-                newProduct.Manufacturer = defaultMan;
-                newProduct.ManufacturerId = defaultMan.Id;
+                StatusMessage = "Podaj nazw\u0119 produktu.";
+                return;
             }
+
+            if (!TryParsePrice(NewProductPrice, out var price))
+            {
+                StatusMessage = "Podaj poprawn\u0105 cen\u0119 produktu.";
+                return;
+            }
+
+            if (SelectedNewManufacturer == null)
+            {
+                StatusMessage = "Wybierz producenta.";
+                return;
+            }
+
+            var newProduct = _blc.CreateProduct();
+            newProduct.Name = name;
+            newProduct.Price = price;
+            newProduct.Type = NewProductType;
+            newProduct.Manufacturer = SelectedNewManufacturer;
+            newProduct.ManufacturerId = SelectedNewManufacturer.Id;
 
             _blc.AddProduct(newProduct);
             Products.Add(newProduct);
             SelectedProduct = newProduct;
-            StatusMessage = "Dodano nowy produkt. Wype\u0142nij dane.";
+            NewProductName = string.Empty;
+            NewProductPrice = string.Empty;
+            StatusMessage = "Dodano nowy produkt.";
         }
 
         private void UpdateProduct(object obj)
@@ -197,6 +260,7 @@ namespace Michalski.ComputerPheripherals.UI
             _blc.AddManufacturer(man);
             Manufacturers.Add(man);
             SelectedManufacturer = man;
+            SelectedNewManufacturer = man;
             NewManufacturerName = string.Empty;
             StatusMessage = "Dodano nowego producenta.";
         }
@@ -221,9 +285,39 @@ namespace Michalski.ComputerPheripherals.UI
             Manufacturers.Remove(SelectedManufacturer);
             SelectedManufacturer = null;
 
+            if (SelectedNewManufacturer != null && SelectedNewManufacturer.Id == manufacturerId)
+            {
+                SelectedNewManufacturer = Manufacturers.FirstOrDefault();
+            }
+
             StatusMessage = productsToRemove.Count == 0
                 ? "Usuni\u0119to producenta."
                 : $"Usuni\u0119to producenta i {productsToRemove.Count} powi\u0105zane produkty.";
+        }
+
+        private static bool TryParsePrice(string priceString, out decimal price)
+        {
+            price = 0;
+            if (string.IsNullOrWhiteSpace(priceString))
+            {
+                return false;
+            }
+
+            var numberStyles = NumberStyles.AllowDecimalPoint | NumberStyles.AllowLeadingSign;
+            var currentCulture = CultureInfo.CurrentCulture;
+            if (decimal.TryParse(priceString, numberStyles, currentCulture, out price))
+            {
+                return true;
+            }
+
+            var polishCulture = new CultureInfo("pl-PL");
+            if (!Equals(currentCulture, polishCulture)
+                && decimal.TryParse(priceString, numberStyles, polishCulture, out price))
+            {
+                return true;
+            }
+
+            return decimal.TryParse(priceString, numberStyles, CultureInfo.InvariantCulture, out price);
         }
 
         protected void OnPropertyChanged([CallerMemberName] string propertyName = null)

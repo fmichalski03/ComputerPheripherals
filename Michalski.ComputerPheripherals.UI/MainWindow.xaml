@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Michalski.ComputerPheripherals.UI"
         mc:Ignorable="d"
-        Title="Katalog Peryferii Komputerowych" Height="450" Width="900">
+        Title="Katalog Peryferii Komputerowych" Height="520" Width="980">
 
     <Window.DataContext>
         <local:MainViewModel/>
@@ -24,15 +24,31 @@
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
 
-            <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="0,0,0,5">
-                <Button Content="Dodaj produkt" Command="{Binding AddCommand}" Padding="5,2" Margin="0,0,5,0"/>
-                <Button Content="Usu&#324; zaznaczony" Command="{Binding DeleteCommand}" Padding="5,2"/>
-            </StackPanel>
+            <GroupBox Grid.Row="0" Header="Nowy produkt" Margin="0,0,0,8">
+                <StackPanel>
+                    <TextBlock Text="Nazwa:"/>
+                    <TextBox Text="{Binding NewProductName, UpdateSourceTrigger=PropertyChanged}" Margin="0,0,0,5"/>
 
-            <StackPanel Grid.Row="1" Orientation="Horizontal" Margin="0,0,0,5">
-                <TextBlock Text="Szukaj:" VerticalAlignment="Center" Margin="0,0,5,0"/>
-                <TextBox Text="{Binding FilterText, UpdateSourceTrigger=PropertyChanged}" Width="200"/>
-            </StackPanel>
+                    <TextBlock Text="Cena:"/>
+                    <TextBox Text="{Binding NewProductPrice, UpdateSourceTrigger=PropertyChanged}" Margin="0,0,0,5"/>
+
+                    <TextBlock Text="Typ:"/>
+                    <ComboBox ItemsSource="{Binding PeripheralTypes}" SelectedItem="{Binding NewProductType}" Margin="0,0,0,5"/>
+
+                    <TextBlock Text="Producent:"/>
+                    <ComboBox ItemsSource="{Binding Manufacturers}" SelectedItem="{Binding SelectedNewManufacturer}" DisplayMemberPath="Name" Margin="0,0,0,8"/>
+
+                    <Button Content="Dodaj produkt" Command="{Binding AddCommand}" Padding="5,2" Width="140"/>
+                </StackPanel>
+            </GroupBox>
+
+            <DockPanel Grid.Row="1" Margin="0,0,0,5">
+                <StackPanel Orientation="Horizontal" DockPanel.Dock="Left">
+                    <TextBlock Text="Szukaj:" VerticalAlignment="Center" Margin="0,0,5,0"/>
+                    <TextBox Text="{Binding FilterText, UpdateSourceTrigger=PropertyChanged}" Width="200"/>
+                </StackPanel>
+                <Button Content="Usu&#324; zaznaczony" Command="{Binding DeleteCommand}" Padding="5,2" DockPanel.Dock="Right"/>
+            </DockPanel>
 
             <DataGrid Grid.Row="2" ItemsSource="{Binding ProductsView}" SelectedItem="{Binding SelectedProduct}" AutoGenerateColumns="False" IsReadOnly="True">
                 <DataGrid.Columns>
