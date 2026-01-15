@@ -69,6 +69,16 @@ namespace Michalski.ComputerPheripherals.DAO
             _manufacturers.Add(manufacturer);
         }
 
+        public void DeleteManufacturer(int manufacturerId)
+        {
+            var toRemove = _manufacturers.FirstOrDefault(m => m.Id == manufacturerId);
+            if (toRemove != null)
+            {
+                _products.RemoveAll(p => p.ManufacturerId == manufacturerId);
+                _manufacturers.Remove(toRemove);
+            }
+        }
+
         public IProduct CreateNewProduct() => new Product();
         public IManufacturer CreateNewManufacturer() => new Manufacturer();
     }

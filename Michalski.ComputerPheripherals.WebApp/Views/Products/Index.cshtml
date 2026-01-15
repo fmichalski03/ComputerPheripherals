@@ -1,4 +1,4 @@
-@model IEnumerable<Michalski.ComputerPheripherals.INTERFACES.IProduct>
+﻿@model IEnumerable<Michalski.ComputerPheripherals.INTERFACES.IProduct>
 
 @{
     ViewData["Title"] = "Produkty";
@@ -7,7 +7,7 @@
 <h1>Produkty</h1>
 
 <p>
-    <a asp-action="Create">Utwórz nowy</a>
+    <a asp-action="Create">Utw&#243;rz nowy</a>
 </p>
 
 <form asp-action="Index" method="get">
@@ -54,8 +54,8 @@
             </td>
             <td>
                 <a asp-action="Edit" asp-route-id="@item.Id">Edytuj</a> |
-                <a asp-action="Details" asp-route-id="@item.Id">Szczegóły</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Usuń</a>
+                <a asp-action="Details" asp-route-id="@item.Id">Szczeg&#243;&#322;y</a> |
+                <a asp-action="Delete" asp-route-id="@item.Id">Usu&#324;</a>
             </td>
         </tr>
 }

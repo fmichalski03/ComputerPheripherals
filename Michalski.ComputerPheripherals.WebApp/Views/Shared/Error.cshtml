@@ -1,25 +1,25 @@
 ﻿@model ErrorViewModel
 @{
-    ViewData["Title"] = "Error";
+    ViewData["Title"] = "B\u0142\u0105d";
 }
 
-<h1 class="text-danger">Error.</h1>
-<h2 class="text-danger">An error occurred while processing your request.</h2>
+<h1 class="text-danger">B&#322;&#261;d.</h1>
+<h2 class="text-danger">Wyst&#261;pi&#322; b&#322;&#261;d podczas przetwarzania &#380;&#261;dania.</h2>
 
 @if (Model.ShowRequestId)
 {
     <p>
-        <strong>Request ID:</strong> <code>@Model.RequestId</code>
+        <strong>Identyfikator &#380;&#261;dania:</strong> <code>@Model.RequestId</code>
     </p>
 }
 
-<h3>Development Mode</h3>
+<h3>Tryb deweloperski</h3>
 <p>
-    Swapping to <strong>Development</strong> environment will display more detailed information about the error that occurred.
+    Prze&#322;&#261;czenie na &#347;rodowisko <strong>Development</strong> wy&#347;wietli bardziej szczeg&#243;&#322;owe informacje o b&#322;&#281;dzie.
 </p>
 <p>
-    <strong>The Development environment shouldn't be enabled for deployed applications.</strong>
-    It can result in displaying sensitive information from exceptions to end users.
-    For local debugging, enable the <strong>Development</strong> environment by setting the <strong>ASPNETCORE_ENVIRONMENT</strong> environment variable to <strong>Development</strong>
-    and restarting the app.
+    <strong>&#346;rodowisko Development nie powinno by&#263; w&#322;&#261;czone w aplikacjach wdro&#380;onych.</strong>
+    Mo&#380;e to spowodowa&#263; ujawnienie wra&#380;liwych informacji z wyj&#261;tk&#243;w u&#380;ytkownikom ko&#324;cowym.
+    Aby debugowa&#263; lokalnie, ustaw zmienn&#261; &#347;rodowiskow&#261; <strong>ASPNETCORE_ENVIRONMENT</strong> na <strong>Development</strong>
+    i uruchom aplikacj&#281; ponownie.
 </p>

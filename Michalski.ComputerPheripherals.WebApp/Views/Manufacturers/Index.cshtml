@@ -25,7 +25,7 @@
                 @Html.DisplayFor(modelItem => item.Name)
             </td>
             <td>
-                @* W przyszłości można dodać akcje Edit | Details | Delete *@
+                <a asp-action="Delete" asp-route-id="@item.Id">Usu&#324;</a>
             </td>
         </tr>
 }

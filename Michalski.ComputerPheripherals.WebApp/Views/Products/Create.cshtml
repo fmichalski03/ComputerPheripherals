@@ -1,11 +1,11 @@
-@model Michalski.ComputerPheripherals.INTERFACES.IProduct
+﻿@model Michalski.ComputerPheripherals.INTERFACES.IProduct
 @using Michalski.ComputerPheripherals.CORE;
 
 @{
-    ViewData["Title"] = "Utwórz";
+    ViewData["Title"] = "Utw\u00F3rz";
 }
 
-<h1>Utwórz</h1>
+<h1>Utw&#243;rz</h1>
 
 <h4>Produkt</h4>
 <hr />
@@ -33,14 +33,14 @@
                 <select asp-for="ManufacturerId" class="form-control" asp-items="ViewBag.Manufacturers"></select>
             </div>
             <div class="form-group mt-3">
-                <input type="submit" value="Utwórz" class="btn btn-primary" />
+                <input type="submit" value="Utw&#243;rz" class="btn btn-primary" />
             </div>
         </form>
     </div>
 </div>
 
 <div>
-    <a asp-action="Index">Powrót do listy</a>
+    <a asp-action="Index">Powr&#243;t do listy</a>
 </div>
 
 @section Scripts {

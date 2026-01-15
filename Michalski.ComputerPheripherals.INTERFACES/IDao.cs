@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
 namespace Michalski.ComputerPheripherals.INTERFACES
 {
@@ -12,7 +12,8 @@ namespace Michalski.ComputerPheripherals.INTERFACES
         void DeleteProduct(int productId);
 
         void AddManufacturer(IManufacturer manufacturer);
-        // Metody edycji/usuwania producenta można dodać wg potrzeb
+        void DeleteManufacturer(int manufacturerId);
+        // Metody edycji producenta mozna dodac wg potrzeb.
         
         IProduct CreateNewProduct(); // Factory method dla tworzenia instancji w UI/BL
         IManufacturer CreateNewManufacturer();

@@ -66,6 +66,7 @@ namespace Michalski.ComputerPheripherals.BL
         public void UpdateProduct(IProduct product) => _dao.UpdateProduct(product);
         public void DeleteProduct(int id) => _dao.DeleteProduct(id);
         public void AddManufacturer(IManufacturer manufacturer) => _dao.AddManufacturer(manufacturer);
+        public void DeleteManufacturer(int id) => _dao.DeleteManufacturer(id);
 
         public IProduct CreateProduct() => _dao.CreateNewProduct();
         public IManufacturer CreateManufacturer() => _dao.CreateNewManufacturer();

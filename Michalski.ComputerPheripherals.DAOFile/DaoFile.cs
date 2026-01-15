@@ -49,6 +49,18 @@ namespace Michalski.ComputerPheripherals.DAOFile
             SaveDatabase();
         }
 
+        public void DeleteManufacturer(int manufacturerId)
+        {
+            LoadDatabase();
+            var manufacturerToRemove = _database.Manufacturers.FirstOrDefault(m => m.Id == manufacturerId);
+            if (manufacturerToRemove != null)
+            {
+                _database.Products.RemoveAll(p => p.ManufacturerId == manufacturerId);
+                _database.Manufacturers.Remove(manufacturerToRemove);
+                SaveDatabase();
+            }
+        }
+
         public void AddProduct(IProduct product)
         {
             LoadDatabase();

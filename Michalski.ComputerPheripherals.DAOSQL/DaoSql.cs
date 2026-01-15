@@ -51,11 +51,11 @@ namespace Michalski.ComputerPheripherals.DAOSQL
             return new Product();
         }
 
-        public void DeleteManufacturer(IManufacturer manufacturer)
+        public void DeleteManufacturer(int manufacturerId)
         {
             using (var context = new PeripheralsDbContext())
             {
-                var manufacturerToDelete = context.Manufacturers.Find(manufacturer.Id);
+                var manufacturerToDelete = context.Manufacturers.Find(manufacturerId);
                 if (manufacturerToDelete != null)
                 {
                     context.Manufacturers.Remove(manufacturerToDelete);

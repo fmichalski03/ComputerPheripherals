@@ -1,5 +1,6 @@
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Michalski.ComputerPheripherals.BL;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace Michalski.ComputerPheripherals.WebApp.Controllers
@@ -38,9 +39,36 @@ namespace Michalski.ComputerPheripherals.WebApp.Controllers
                     _blc.AddManufacturer(newManufacturer);
                     return RedirectToAction(nameof(Index));
                 }
-                ModelState.AddModelError("Name", "Nazwa producenta nie może być pusta.");
+                ModelState.AddModelError("Name", "Nazwa producenta nie mo\u017Ce by\u0107 pusta.");
             }
             return View("Create", newManufacturer);
+        }
+
+        // GET: Manufacturers/Delete/5
+        public IActionResult Delete(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var manufacturer = _blc.GetManufacturers().FirstOrDefault(m => m.Id == id);
+            if (manufacturer == null)
+            {
+                return NotFound();
+            }
+
+            ViewBag.ProductsCount = _blc.GetProducts().Count(p => p.ManufacturerId == id);
+            return View(manufacturer);
+        }
+
+        // POST: Manufacturers/Delete/5
+        [HttpPost, ActionName("Delete")]
+        [ValidateAntiForgeryToken]
+        public IActionResult DeleteConfirmed(int id)
+        {
+            _blc.DeleteManufacturer(id);
+            return RedirectToAction(nameof(Index));
         }
     }
 }
